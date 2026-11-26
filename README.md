@@ -1,67 +1,80 @@
-# SmartSpend 💸
-### A Personal Expense Tracker for College Students
+# SmartSpend
 
-## Overview
-SmartSpend is a Java-based expense tracking application designed to help college students manage their personal and shared expenses. It makes tracking spending, splitting costs with friends, and calculating balances easier and more organized.
+A Java terminal app for college students to record expenses, split bills, and see shared balances.
 
-## Problem Statement
-College students frequently share expenses for meals, transportation, groceries, and other activities. Keeping track of these expenses and calculating how much each person owes can become confusing and time-consuming. SmartSpend aims to simplify this process through one organized application.
+## The Problem
 
-## MVP Features
-- **Add Expenses:** Record expenses with an amount, category, date, and description.
-- **View Expenses:** Display previously recorded expenses.
-- **Split Costs:** Divide shared expenses among multiple participants.
-- **Calculate Balances:** Determine how much each participant owes or is owed.
+Roommates and friends often take turns paying for meals, rides, and groceries. SmartSpend keeps those payments in one place and calculates what each person owes or is owed.
 
-## Future Features
-- Monthly spending charts and statistics.
-- Monthly budgets and spending limits.
-- Automatic tracking of recurring expenses.
-- Exporting expense reports.
+## How It Works
+
+`Main` reads menu selections with a `Scanner` and keeps an `ArrayList<Expense>`. `Expense` splits each shared charge into whole cents. `ExpenseStore` loads the saved entries at startup and appends each new entry to `expenses.tsv` in the working directory.
+
+![SmartSpend system diagram](docs/system-diagram.svg)
+
+The payer receives credit for the full amount. Everyone listed in the split, including the payer if they participated, is charged a share. Names and categories are matched without regard to capitalization. Any extra pennies go to the first names listed. Personal expenses never affect shared balances.
 
 ## Tech Stack
 
-| Component | Technology |
-|---|---|
-| Programming Language | Java |
-| IDE | IntelliJ IDEA |
-| Input Handling | Java Scanner |
-| Data Structures | ArrayList |
-| Date Handling | LocalDate |
-| Data Storage | CSV / Text Files |
-| Version Control | Git & GitHub |
+- Java 17 or newer using the standard library
+- `Scanner`, `ArrayList`, `LocalDate`
+- Tab-separated local text file
+- Git and GitHub for version control
+- IntelliJ IDEA or a terminal and any editor
 
-The MVP will use standard Java libraries and will not require external APIs or databases.
+## Setup
 
-## Development Roadmap
-1. Set up the GitHub repository and Java project.
-2. Create the `Expense` class and define its attributes.
-3. Implement functionality to add and display expenses.
-4. Add expense categorization.
-5. Implement shared expense splitting.
-6. Develop individual balance calculations.
-7. Implement file storage to save and retrieve expenses.
-8. Test the application, fix bugs, and finalize documentation.
+1. Install a JDK (Java 17 or newer). Run `javac -version` and `java -version` in a terminal.
+2. Run `git clone https://github.com/sachi-jain/smartSpend-.git SmartSpend` and then `cd SmartSpend`. If you already have the source, open a terminal in its SmartSpend folder.
+3. Compile and run:
 
-## Project Structure
+   ```sh
+   mkdir -p out
+   javac --release 17 -d out src/*.java
+   java -cp out Main
+   ```
+
+For IntelliJ IDEA, open the SmartSpend folder, select a JDK of 17 or newer under **File → Project Structure**, then right-click `src` and select **Mark Directory as → Sources Root**. Open `src/Main.java` and run `Main.main` using the green triangle. Set the run configuration's working directory to the SmartSpend folder so both launch methods use the same data.
+
+### Example
+
+Choose **1** and enter the following values in order:
+
 ```text
-SmartSpend/
-├── src/
-│   ├── Main.java
-│   └── Expense.java
-├── docs/
-│   ├── eisenhower-matrix.pdf
-│   ├── system-diagram.png
-│   └── development-plan.md
-├── README.md
-└── .gitignore
+10.00
+Food
+2026-11-15
+Pizza
+Sam
+Sam, Alex, Jo
 ```
 
-## Documentation
-Project planning documents, including the Eisenhower Matrix, system diagram, and development plan, will be available in the `docs/` directory.
+Choose **3** for shared balances:
 
-## Project Status
-Currently in the planning and initial development stage.
+```text
+alex owes $3.33
+jo owes $3.33
+sam is owed $6.66
+```
 
----
-**Developed as a semester-long project at Purdue University.**
+Exit with **0** and restart to see the saved entry under **2**.
+
+## Roadmap
+
+- [x] Record and view personal and shared expenses
+- [x] Split shared expenses and calculate balances
+- [x] Save and reload expenses from a local file
+- [ ] Summarize monthly spending by category (Schedule feature)
+- [ ] Add monthly budgets
+- [ ] Track recurring expenses
+- [ ] Export expense reports
+
+## Project Planning
+
+- [Eisenhower Matrix](2.1%20Eisenhower%20Matrix%20%E2%80%93%20SmartSpend.pdf)
+- [Original program flowchart](SmartSpend%20Program%20Flowchart.png)
+- [Development plan](docs/development-plan.md)
+
+## Demo
+
+Add the public link to your 3–4 minute video here after recording.
