@@ -12,12 +12,12 @@ Roommates and friends often take turns paying for meals, rides, and groceries. S
 
 ![SmartSpend system diagram](docs/system-diagram.svg)
 
-The payer receives credit for the full amount. Everyone listed in the split, including the payer if they participated, is charged a share. Names and categories are matched without regard to capitalization. Any extra pennies go to the first names listed. Personal expenses never affect shared balances.
+The payer receives credit for the full amount. Everyone listed in the split, including the payer if they participated, is charged a share. Names and categories are matched without regard to capitalization. Any extra pennies go to the first names listed. Personal expenses never affect shared balances. The monthly summary counts the full recorded amount of each expense once, including shared expenses.
 
 ## Tech Stack
 
 - Java 17 or newer using the standard library
-- `Scanner`, `ArrayList`, `LocalDate`
+- `Scanner`, `ArrayList`, `LocalDate`, and `YearMonth`
 - Tab-separated local text file
 - Git and GitHub for version control
 - IntelliJ IDEA or a terminal and any editor
@@ -57,14 +57,14 @@ jo owes $3.33
 sam is owed $6.66
 ```
 
-Exit with **0** and restart to see the saved entry under **2**.
+Choose **4**, enter `2026-11`, and the monthly summary shows `food: $10.00` and `Total: $10.00` if Pizza is the only entry for the month. Exit with **0** and restart to see the saved entry under **2**.
 
 ## Roadmap
 
 - [x] Record and view personal and shared expenses
 - [x] Split shared expenses and calculate balances
 - [x] Save and reload expenses from a local file
-- [ ] Summarize monthly spending by category (Schedule feature)
+- [x] Summarize monthly spending by category (Schedule feature)
 - [ ] Add monthly budgets
 - [ ] Track recurring expenses
 - [ ] Export expense reports

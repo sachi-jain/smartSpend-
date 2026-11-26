@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,19 +31,20 @@ public class Main {
         System.out.println("SmartSpend");
         while (true) {
             System.out.println("\n1. Add expense   2. View expenses   3. Shared balances"
-                    + "\n0. Exit");
+                    + "\n4. Monthly summary   0. Exit");
             try {
                 switch (ask("Choose")) {
                     case "1" -> addExpense();
                     case "2" -> viewExpenses();
                     case "3" -> viewBalances();
+                    case "4" -> viewMonthlySummary();
                     case "0" -> { return; }
                     default -> System.out.println("Choose a number from the menu.");
                 }
             } catch (NoSuchElementException endOfInput) {
                 return;
             } catch (DateTimeParseException error) {
-                System.out.println("Use a valid date (YYYY-MM-DD).");
+                System.out.println("Use a valid date (YYYY-MM-DD) or month (YYYY-MM).");
             } catch (IllegalArgumentException error) {
                 System.out.println(error.getMessage());
             } catch (IOException error) {
@@ -94,6 +96,24 @@ public class Main {
                 System.out.println(name + " is settled.");
             }
         });
+    }
+
+    private void viewMonthlySummary() {
+        String monthInput = ask("Month (YYYY-MM or Enter for this month)");
+        YearMonth month = monthInput.isEmpty() ? YearMonth.now() : YearMonth.parse(monthInput);
+        TreeMap<String, Long> totals = new TreeMap<>();
+        for (Expense expense : expenses) {
+            if (YearMonth.from(expense.date()).equals(month)) {
+                totals.merge(expense.category(), expense.cents(), Long::sum);
+            }
+        }
+        if (totals.isEmpty()) {
+            System.out.println("No expenses for " + month + ".");
+            return;
+        }
+        System.out.println("Recorded spending for " + month);
+        totals.forEach((category, cents) -> System.out.println(category + ": " + Expense.dollars(cents)));
+        System.out.println("Total: " + Expense.dollars(totals.values().stream().mapToLong(Long::longValue).sum()));
     }
 
     private String ask(String prompt) {
